@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { RestauranteService } from './restaurante.service';
 import { Restaurante } from './restaurante.entity';
+import { RestauranteDto } from './restaurante.dto';
+import { ApiBody } from '@nestjs/swagger';
 
-@Controller('restaurante')
+@Controller('restaurants')
 export class RestauranteController {
   constructor(private readonly restauranteService: RestauranteService) {}
 
@@ -17,14 +19,16 @@ export class RestauranteController {
   }
 
   @Post()
-  create(@Body() data: Partial<Restaurante>): Promise<Restaurante> {
+  @ApiBody({ type: RestauranteDto })
+  create(@Body() data: RestauranteDto): Promise<Restaurante> {
     return this.restauranteService.create(data);
   }
 
   @Put(':id')
+  @ApiBody({ type: RestauranteDto })
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: Partial<Restaurante>,
+    @Body() data: RestauranteDto,
   ): Promise<Restaurante> {
     return this.restauranteService.update(id, data);
   }
