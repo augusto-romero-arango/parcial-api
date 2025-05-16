@@ -1,3 +1,13 @@
+# Instrucciones
+
+1. Inicie docker desktop
+2. Suba el docker Compose. En la raiz del proyecto `docker compopose up -d`
+3. La aplicación queda disponible en `http://localhost:3000/api`
+4. Las colecciones de postman están en el directorio collections, que se encuentra en el primer nivel de este repo
+
+--- 
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
