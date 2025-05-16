@@ -1,0 +1,340 @@
+{
+	"info": {
+		"_postman_id": "d8b067dd-d518-4be0-99ec-8d4811ee4345",
+		"name": "Restaurantes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4077871",
+		"_collection_link": "https://galactic-firefly-3788.postman.co/workspace/My-Workspace~d9ed0ccd-9cd7-4ec0-8c32-82355ceed0db/collection/4077871-d8b067dd-d518-4be0-99ec-8d4811ee4345?action=share&source=collection_link&creator=4077871"
+	},
+	"item": [
+		{
+			"name": "Crear restaurante válido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () { pm.response.to.have.status(201); });",
+							"var json = pm.response.json();",
+							"pm.collectionVariables.set(\"restauranteId\", json.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"Restaurante Uno\",\"direccion\":\"Calle 1\",\"tipoCocina\":\"Italiana\",\"paginaWeb\":\"https://uno.com\"}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/restaurants",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"restaurants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear restaurante inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 400\", function () { pm.response.to.have.status(400); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"\",\"direccion\":\"\",\"tipoCocina\":\"Francesa\",\"paginaWeb\":\"\"}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/restaurants",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"restaurants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todos los restaurantes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Debe retornar un array\", function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/restaurants",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"restaurants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener restaurante por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Debe retornar el restaurante correcto\", function () {",
+							"    var json = pm.response.json();",
+							"    pm.expect(json.id).to.eql(parseInt(pm.collectionVariables.get(\"restauranteId\")));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/restaurants/{{restauranteId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"restaurants",
+						"{{restauranteId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener restaurante por ID inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () { pm.response.to.have.status(404); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/restaurants/9999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"restaurants",
+						"9999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar restaurante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Debe retornar el nombre actualizado\", function () {",
+							"    var json = pm.response.json();",
+							"    pm.expect(json.nombre).to.eql(\"Restaurante Actualizado\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"Restaurante Actualizado\",\"direccion\":\"Calle 2\",\"tipoCocina\":\"Japonesa\",\"paginaWeb\":\"https://actualizado.com\"}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/restaurants/{{restauranteId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"restaurants",
+						"{{restauranteId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar restaurante con ID inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () { pm.response.to.have.status(404); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"Restaurante Actualizado\",\"direccion\":\"Calle 2\",\"tipoCocina\":\"Japonesa\",\"paginaWeb\":\"https://actualizado.com\"}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/restaurants/9999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"restaurants",
+						"9999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar restaurante por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 o 204\", function () { pm.expect([200,204]).to.include(pm.response.code); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/restaurants/{{restauranteId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"restaurants",
+						"{{restauranteId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar restaurante con ID inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () { pm.response.to.have.status(404); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/restaurants/9999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"restaurants",
+						"9999"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "restauranteId",
+			"value": ""
+		}
+	]
+}

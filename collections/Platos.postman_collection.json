@@ -1,0 +1,340 @@
+{
+	"info": {
+		"_postman_id": "301f8e6b-be67-40b3-aaab-64c347761de7",
+		"name": "Platos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4077871",
+		"_collection_link": "https://galactic-firefly-3788.postman.co/workspace/My-Workspace~d9ed0ccd-9cd7-4ec0-8c32-82355ceed0db/collection/4077871-301f8e6b-be67-40b3-aaab-64c347761de7?action=share&source=collection_link&creator=4077871"
+	},
+	"item": [
+		{
+			"name": "Crear plato válido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () { pm.response.to.have.status(201); });",
+							"var json = pm.response.json();",
+							"pm.collectionVariables.set(\"platoId\", json.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"Pizza\",\"descripcion\":\"Pizza italiana\",\"precio\":20000,\"categoria\":\"entrada\"}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dishes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear plato inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 400\", function () { pm.response.to.have.status(400); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"\",\"descripcion\":\"\",\"precio\":-1,\"categoria\":\"invalida\"}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dishes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todos los platos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Debe retornar un array\", function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/dishes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener plato por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Debe retornar el plato correcto\", function () {",
+							"    var json = pm.response.json();",
+							"    pm.expect(json.id).to.eql(parseInt(pm.collectionVariables.get(\"platoId\")));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/dishes/{{platoId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"{{platoId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener plato por ID inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () { pm.response.to.have.status(404); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/dishes/9999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"9999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar plato",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+							"pm.test(\"Debe retornar el nombre actualizado\", function () {",
+							"    var json = pm.response.json();",
+							"    pm.expect(json.nombre).to.eql(\"Pizza Actualizada\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"Pizza Actualizada\",\"descripcion\":\"Pizza con extra queso\",\"precio\":25000,\"categoria\":\"plato fuerte\"}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dishes/{{platoId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"{{platoId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar plato con ID inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () { pm.response.to.have.status(404); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\":\"Pizza Actualizada\",\"descripcion\":\"Pizza con extra queso\",\"precio\":25000,\"categoria\":\"plato fuerte\"}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/dishes/9999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"9999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar plato por ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200 o 204\", function () { pm.expect([200,204]).to.include(pm.response.code); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/dishes/{{platoId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"{{platoId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar plato con ID inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", function () { pm.response.to.have.status(404); });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/dishes/9999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dishes",
+						"9999"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "platoId",
+			"value": ""
+		}
+	]
+}
