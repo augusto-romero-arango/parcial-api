@@ -7,12 +7,13 @@ import { PlatoController } from './plato/plato.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Restaurante } from './restaurante/restaurante.entity';
 import { Plato } from './plato/plato.entity';
+import { RestauranteModule } from './restaurante/restaurante.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, RestauranteModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
@@ -27,7 +28,7 @@ import { Plato } from './plato/plato.entity';
     }),
     TypeOrmModule.forFeature([Restaurante, Plato]),
   ],
-  controllers: [AppController, RestauranteController, PlatoController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
