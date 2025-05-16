@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 import { Plato } from '../plato/plato.entity';
 
 @Entity()
@@ -12,6 +12,13 @@ export class Restaurante {
   @Column()
   direccion: string;
 
-  @OneToMany(() => Plato, (plato) => plato.restaurante)
+  @Column()
+  tipoCocina: string;
+
+  @Column()
+  paginaWeb: string;
+
+  @ManyToMany(() => Plato, (plato) => plato.restaurantes)
+  @JoinTable()
   platos: Plato[];
 }

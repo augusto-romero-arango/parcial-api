@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 import { Restaurante } from '../restaurante/restaurante.entity';
 
 @Entity()
@@ -15,6 +15,9 @@ export class Plato {
   @Column('decimal')
   precio: number;
 
-  @ManyToOne(() => Restaurante, (restaurante) => restaurante.platos)
-  restaurante: Restaurante;
+  @Column()
+  categoria: string; // entrada, plato fuerte, postre, bebida
+
+  @ManyToMany(() => Restaurante, (restaurante) => restaurante.platos)
+  restaurantes: Restaurante[];
 }
