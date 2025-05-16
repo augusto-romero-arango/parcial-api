@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PlatoController } from './plato.controller';
+import { PlatoService } from './plato.service';
 
 describe('PlatoController', () => {
   let controller: PlatoController;
@@ -7,6 +8,12 @@ describe('PlatoController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PlatoController],
+      providers: [
+        {
+          provide: PlatoService,
+          useValue: {}, 
+        },
+      ],
     }).compile();
 
     controller = module.get<PlatoController>(PlatoController);
