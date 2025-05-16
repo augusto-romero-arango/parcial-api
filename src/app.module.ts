@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Restaurante } from './restaurante/restaurante.entity';
@@ -29,7 +28,6 @@ import { PlatoModule } from './plato/plato.module';
     TypeOrmModule.forFeature([Restaurante, Plato]),
     RestaurantePlatoModule,
   ],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

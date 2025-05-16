@@ -5,6 +5,13 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.use((req, res, next) => {
+    if (req.path === '/') {
+      return res.redirect('/api');
+    }
+    next();
+  });
+
   const config = new DocumentBuilder()
     .setTitle('API Restaurante')
     .setDescription('Documentación de la API de Restaurantes')
