@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Restaurante } from './restaurante/restaurante.entity';
 import { Plato } from './plato/plato.entity';
 import { RestauranteModule } from './restaurante/restaurante.module';
+import { RestaurantePlatoModule } from './restaurante-plato/restaurante-plato.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { RestauranteModule } from './restaurante/restaurante.module';
       }),
     }),
     TypeOrmModule.forFeature([Restaurante, Plato]),
+    RestaurantePlatoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
